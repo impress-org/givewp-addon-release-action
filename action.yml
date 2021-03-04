@@ -1,0 +1,36 @@
+name: 'GiveWP Addon Release'
+description: 'Takes a zip file and releases it to givewp.com'
+inputs:
+  plugin-slug:
+    description: 'Slug of the plugin'
+    required: true
+  zip-file:
+    description: 'Plugin file'
+    required: true
+  readme-file:
+    description: 'readme.txt file'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Copy zip and readme files to GiveWP.com
+      shell: bash
+      run: |
+        scp ${{ inputs.zip-file }} ${{ secrets.GIVEWP_DOWNLOADS_PATH }}/plugins/${{ inputs.plugin-slug }}.zip
+        scp ${{ inputs.readme-file }} ${{ secrets.GIVEWP_DOWNLOADS_PATH }}/plugins/"${{ inputs.plugin-slug }}"
+
+    - name: Clear zip file in Sucuri cache
+      shell: bash
+      run: curl 'https://waf.sucuri.net/api?v2' \
+        --data 'k=${{ secrets.SUCURI_API_KEY }}' \
+        --data 's=${{ secrets.SUCURI_API_SECRET }}' \
+        --data 'a=clear_cache' \
+        --data "file=${{ inputs.zip-file }}"
+
+    - name: Clear readme file in Sucuri cache
+      shell: bash
+      run: curl 'https://waf.sucuri.net/api?v2' \
+        --data 'k=${{ secrets.SUCURI_API_KEY }}' \
+        --data 's=${{ secrets.SUCURI_API_SECRET }}' \
+        --data 'a=clear_cache' \
+        --data "file=${{ inputs.readme-file }}"
