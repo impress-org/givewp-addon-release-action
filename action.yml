@@ -13,12 +13,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Copy zip and readme files to GiveWP.com
-      shell: bash
-      run: |
-        rsync -avz ${{ inputs.zip-file }} ${{ secrets.GIVEWP_DOWNLOADS_PATH }}/${{ inputs.plugin-slug }}.zip
-        rsync -avz ${{ inputs.readme-file }} ${{ secrets.GIVEWP_DOWNLOADS_PATH }}/plugins/"${{ inputs.plugin-slug }}/readme.txt"
-
     - name: Clear file from Sucuri cache
       shell: bash
       run: curl 'https://waf.sucuri.net/api?v2' \
