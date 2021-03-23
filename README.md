@@ -1,12 +1,11 @@
-This action takes a plugin slug, zip file, and readme.txt file and deploys it securely
-to GiveWP.com. This should only be used on releases and after testing. Use with care.
+This action clears a file within the Sucuri cache.
 
 ### Usage
 ```yaml
 steps:
-  - uses: actions/givewp-addon-release@v1
+  - uses: actions/clear-sucuri-cache-action@v1
     with:
-      plugin-slug: give-recurring
-      zip-file: /path/to/give-recurring.zip
-      readme-file: /path/to/readme.txt
+      api_key: ${{ secrets.SUCURI_API_KEY }}
+      api_secret: ${{ secrets.SUCURI_API_SECRET }}
+      file: /path/to/file.zip
 ```
