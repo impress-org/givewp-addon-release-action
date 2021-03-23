@@ -15,8 +15,9 @@ runs:
   steps:
     - name: Clear file from Sucuri cache
       shell: bash
-      run: curl 'https://waf.sucuri.net/api?v2' \
-        --data 'k=${{ inputs.api_key }}' \
-        --data 's=${{ inputs.api_secret }}' \
-        --data 'a=clear_cache' \
+      run: >
+        curl 'https://waf.sucuri.net/api?v2'
+        --data 'k=${{ inputs.api_key }}'
+        --data 's=${{ inputs.api_secret }}'
+        --data 'a=clear_cache'
         --data "file=${{ inputs.file }}"
